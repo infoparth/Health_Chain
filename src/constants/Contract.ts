@@ -4,7 +4,7 @@ import { abi } from "./recordsabi";
 
 // const clientId = process.env.VITE_CLIENT_ID || "";
 
-const clientId = "";
+const clientId = "a81b28f71aa45b7499e14d244942b8b2";
 
 export const contractAddress = "0xf57cfC89eDde16Fa372AcB9D8BFF99A32Ff8f74F";
 
