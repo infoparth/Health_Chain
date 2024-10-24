@@ -15,7 +15,7 @@ export const client: ThirdwebClient = createThirdwebClient({
 
 export const chain = polygonAmoy;
 
-const testAddress = "0xCcb5D973024f1AC0672CD4a8eA3774BE805275a0";
+// const testAddress = "0xCcb5D973024f1AC0672CD4a8eA3774BE805275a0";
 
 export const Contract = getContract({
   client: client,

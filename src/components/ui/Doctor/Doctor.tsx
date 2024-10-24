@@ -47,6 +47,8 @@ const Doctor: React.FC = () => {
   const [selectedPatient, setSelectPatient] = useState<string>("");
   const [selectedRecord, setSelectedRecord] = useState<string | null>(null);
 
+  console.log("The Selected Record is: ", selectedRecord);
+
   const wallet = useActiveAccount();
   const walletAddress = wallet?.address || "";
 

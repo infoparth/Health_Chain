@@ -6,7 +6,7 @@ import {
   ConnectButton,
 } from "thirdweb/react";
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+// import { Card, CardContent } from "@/components/ui/card";
 
 export default function View() {
   const [walletFound, setWalletFound] = useState(true);

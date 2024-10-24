@@ -10,7 +10,6 @@ import {
 import { ThirdwebProvider } from "thirdweb/react";
 import Layout from "./Layout.tsx";
 import LandingPage from "./components/LandingPage/LandingPage.tsx";
-import dotenv from "dotenv";
 import Login from "./components/Login/Login.tsx";
 import Patient from "./components/Patient/Patient.tsx";
 import { Register } from "./components/Registration/Registration.tsx";

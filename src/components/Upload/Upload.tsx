@@ -7,7 +7,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 
-
 //
 const Upload: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);

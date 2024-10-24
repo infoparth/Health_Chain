@@ -25,9 +25,7 @@ export const Register = () => {
     createWallet("me.rainbow"),
   ];
 
-  const handleRegisterAs = (
-    e: React.MouseEvent<HTMLSelectElement, MouseEvent>
-  ) => {
+  const handleRegisterAs = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRegisterAs(e.target.value);
     console.log(e.target.value);
   };
@@ -116,7 +114,7 @@ export const Register = () => {
             <input
               type="number"
               value={age}
-              onChange={(e) => setAge(e.target.value)}
+              onChange={(e) => setAge(Number(e.target.value))}
               id="age"
               className="w-full px-4 py-2 border rounded-md"
               placeholder="Age"

@@ -7,7 +7,6 @@ import {
 } from "thirdweb/react";
 import { prepareContractCall, sendAndConfirmTransaction } from "thirdweb";
 import { upload } from "thirdweb/storage";
-import { Loader2 } from "lucide-react";
 
 export default function NFT() {
   const [selectedRecord, setSelectedRecord] = useState<string>(); //TELLS WHICH FILE IS SELECTED
@@ -110,7 +109,7 @@ export default function NFT() {
     setSelectedRecord(url);
   };
 
-  const handleRecordChange = (event) => {
+  const handleRecordChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedRecord(event.target.value);
   };
 
@@ -131,7 +130,7 @@ export default function NFT() {
                   >
                     <li
                       onClick={() => handleDocumentClick(url)}
-                      onChange={handleRecordChange}
+                      onChange={() => handleRecordChange}
                     >
                       <MediaRenderer client={client} src={url} />
                     </li>

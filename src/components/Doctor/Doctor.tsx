@@ -38,8 +38,8 @@ interface ChildProps {
 // };
 
 const ChildComponent: React.FC<ChildProps> = ({ input }) => {
-  const wallet = useActiveAccount();
-  const walletAddress = wallet?.address || "";
+  // const wallet = useActiveAccount();
+  // const walletAddress = wallet?.address || "";
 
   const { data: record_list } = useReadContract({
     contract: Contract,
@@ -89,7 +89,7 @@ const ChildComponent: React.FC<ChildProps> = ({ input }) => {
 
 const Doctor: React.FC = () => {
   const [selectedPatient, setSelectPatient] = useState<string>("");
-  const [selectedRecord, setSelectedRecord] = useState<string | null>(null);
+  // const [selectedRecord, setSelectedRecord] = useState<string | null>(null);
 
   const wallet = useActiveAccount();
   const walletAddress = wallet?.address || "";
@@ -104,9 +104,9 @@ const Doctor: React.FC = () => {
     setSelectPatient(pat_address);
   };
 
-  const handleRecordChange = (event: React.ChangeEvent<HTMLLIElement>) => {
-    setSelectedRecord(event.target.textContent);
-  };
+  // const handleRecordChange = (event: React.ChangeEvent<HTMLLIElement>) => {
+  //   setSelectedRecord(event.target.textContent);
+  // };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#c9def4] to-[#b8a4c9]">

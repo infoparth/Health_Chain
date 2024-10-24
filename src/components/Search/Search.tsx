@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
 
-  function search(e) {
+  function search(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setQuery(e.target.value);
   }
@@ -14,7 +14,7 @@ const SearchBar = () => {
         type="text"
         className="w-full placeholder-gray-400 text-gray-900 p-4"
         placeholder="Search"
-        onChange={search}
+        onChange={(e) => search(e)}
         value={query}
       />
       {"   "}

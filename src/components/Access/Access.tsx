@@ -71,7 +71,7 @@ export default function Access() {
     }
   };
 
-  const handleAddressChange = (event) => {
+  const handleAddressChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedAddress(event.target.value);
   };
 
