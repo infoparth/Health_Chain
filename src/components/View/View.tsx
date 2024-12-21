@@ -5,7 +5,9 @@ import {
   MediaRenderer,
   ConnectButton,
 } from "thirdweb/react";
+
 import { useEffect, useState } from "react";
+
 // import { Card, CardContent } from "@/components/ui/card";
 
 export default function View() {
@@ -18,9 +20,11 @@ export default function View() {
 
   const { data: document_list } = useReadContract({
     contract: Contract,
-    method: "getDocuments",
-    params: [walletAddress],
+    method: "getPatientDocuments",
+    params: [walletAddress as `0x${string}`],
   });
+
+  console.log("The document list is: ", document_list);
 
   useEffect(() => {
     const setWallet = () => {
@@ -36,12 +40,12 @@ export default function View() {
         <div className="ViewPage text-center p-4">
           <h4 className="mb-4 text-5xl">List of your records</h4>
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {document_list.map((url, index) => (
+            {document_list.map((document, index) => (
               <li
                 key={index}
                 className="border border-gray-400 rounded-md overflow-hidden"
               >
-                <MediaRenderer client={client} src={url} />
+                <MediaRenderer client={client} src={document?.documentURI} />
               </li>
             ))}
           </ul>

@@ -38,13 +38,13 @@ interface ChildProps {
 // };
 
 const ChildComponent: React.FC<ChildProps> = ({ input }) => {
-  // const wallet = useActiveAccount();
-  // const walletAddress = wallet?.address || "";
+  const wallet = useActiveAccount();
+  const walletAddress = wallet?.address || "";
 
   const { data: record_list } = useReadContract({
     contract: Contract,
-    method: "getDocuments",
-    params: [input],
+    method: "getDoctorAccessibleDocuments",
+    params: [walletAddress as `0x${string}`, input as `0x${string}`],
   });
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -71,13 +71,13 @@ const ChildComponent: React.FC<ChildProps> = ({ input }) => {
           <h4>Records List</h4>
           <ul className="grid grid-cols-2 gap-4">
             {record_list &&
-              record_list.map((url, index) => (
+              record_list.map((document, index) => (
                 <li
                   key={index}
-                  onClick={() => handleImageClick(url)}
+                  onClick={() => handleImageClick(document?.documentURI)}
                   className="cursor-pointer"
                 >
-                  <MediaRenderer client={client} src={url} />
+                  <MediaRenderer client={client} src={document?.documentURI} />
                 </li>
               ))}
           </ul>
@@ -96,8 +96,8 @@ const Doctor: React.FC = () => {
 
   const { data: patient_list } = useReadContract({
     contract: Contract,
-    method: "patientsUnderDoctor",
-    params: [walletAddress],
+    method: "getMyPatients",
+    params: [walletAddress as `0x${string}`],
   });
 
   const view = (pat_address: string) => {

@@ -8,23 +8,32 @@ import {
 import { prepareContractCall, sendAndConfirmTransaction } from "thirdweb";
 import { upload } from "thirdweb/storage";
 
+interface Document {
+  documentId: bigint;
+  documentURI: string;
+  timestamp: bigint;
+  isMinted: boolean;
+  tokenId: bigint;
+}
+
 export default function NFT() {
-  const [selectedRecord, setSelectedRecord] = useState<string>(); //TELLS WHICH FILE IS SELECTED
-  const [mintAddress, setMintAddress] = useState<string>(); ///THE MINT ADDRESS
+  const [selectedRecord, setSelectedRecord] = useState<bigint>(); //TELLS WHICH FILE IS SELECTED
+  const [selectedURI, setSelectedURI] = useState<string>();
+  const [mintAddress, setMintAddress] = useState<`0x${string}` | string>(); ///THE MINT ADDRESS
   const [useLoggedInAddress, setUseLoggedInAddress] = useState(false); //SAME AS ABOVE
   const [transactionReciept, setTransactionReciept] = useState("");
   const [transactionSent, setTransactionSent] = useState(false);
 
   const wallet = useActiveAccount();
 
-  const walletAddress = wallet?.address || "";
+  const walletAddress = wallet?.address || undefined;
 
   console.log("The Wallet Address is: " + walletAddress);
 
   const { data: record_list } = useReadContract({
     contract: Contract,
-    method: "getDocuments",
-    params: [walletAddress],
+    method: "getPatientDocuments",
+    params: [walletAddress as `0x${string}`],
   });
 
   console.log("Calling the function here:", record_list);
@@ -34,8 +43,8 @@ export default function NFT() {
       try {
         const transaction = prepareContractCall({
           contract: Contract,
-          method: "safeMint",
-          params: [mintAddress, selectedRecord],
+          method: "mintDocumentAsNFT",
+          params: [mintAddress as `0x${string}`, selectedRecord],
         });
 
         console.log("The transaction is", transaction);
@@ -65,7 +74,7 @@ export default function NFT() {
 
   const handleWriteData = async () => {
     setTransactionSent(true);
-    const _cid = selectedRecord;
+    const _cid = selectedURI;
 
     //SET NFT METADATA
 
@@ -105,12 +114,18 @@ export default function NFT() {
 
   //REMAINING FUCNCTIONS
 
-  const handleDocumentClick = (url: string) => {
-    setSelectedRecord(url);
+  const handleDocumentClick = (document: Document) => {
+    console.log("CLicked here and IDK what happened");
+    setSelectedRecord(document?.documentId);
+    setSelectedURI(document?.documentURI);
   };
 
   const handleRecordChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedRecord(event.target.value);
+    console.log(
+      "Example to see what the chaneged value is: ",
+      event.target.value
+    );
+    setSelectedRecord(BigInt(event.target.value));
   };
 
   if (record_list !== undefined && record_list.length > 0) {
@@ -121,25 +136,30 @@ export default function NFT() {
             <div>
               <h4 className="mb-4 text-4xl">List of your records</h4>
               <div className="flex flex-wrap justify-center mb-4">
-                {record_list.map((url, index) => (
+                {record_list.map((document, index) => (
                   <div
                     key={index}
                     className={`m-2 ${
-                      url === selectedRecord ? "border border-blue-500" : ""
+                      document?.documentId === selectedRecord
+                        ? "border border-blue-500"
+                        : ""
                     }`}
                   >
                     <li
-                      onClick={() => handleDocumentClick(url)}
+                      onClick={() => handleDocumentClick(document)}
                       onChange={() => handleRecordChange}
                     >
-                      <MediaRenderer client={client} src={url} />
+                      <MediaRenderer
+                        client={client}
+                        src={document?.documentURI}
+                      />
                     </li>
                   </div>
                 ))}
               </div>
               <div className="text-left">
                 <div className="theURLblock mb-4">
-                  <p>Selected URL: {selectedRecord}</p>
+                  <p>Selected Id: {selectedRecord?.toString()}</p>
                   <label className="block mb-2">
                     Mint NFT to Wallet Address:
                     <input
@@ -158,7 +178,7 @@ export default function NFT() {
                         if (!useLoggedInAddress) {
                           setMintAddress(walletAddress); // Set mintAddress to logged-in address
                         } else {
-                          setMintAddress(""); // Clear mintAddress when unchecking
+                          setMintAddress(undefined); // Clear mintAddress when unchecking
                         }
                       }}
                     />

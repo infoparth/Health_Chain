@@ -17,8 +17,8 @@ export default function Access() {
 
   const { data: doctor_list } = useReadContract({
     contract: Contract,
-    method: "patient_has_doctors",
-    params: [walletAddress],
+    method: "getMyDoctors",
+    params: [walletAddress as `0x${string}`],
   });
 
   console.log("Got something:", doctor_list);
@@ -32,8 +32,8 @@ export default function Access() {
         if (task === "grantAccess") {
           transaction = prepareContractCall({
             contract: Contract,
-            method: "grantAccess",
-            params: [newDoctorAddress],
+            method: "grantAccessToDoctor",
+            params: [newDoctorAddress as `0x${string}`],
           });
         } else if (task === "revokeAccess") {
           const confirmed = window.confirm(
@@ -43,8 +43,8 @@ export default function Access() {
           if (confirmed) {
             transaction = prepareContractCall({
               contract: Contract,
-              method: "revokeAccess",
-              params: [selectedAddress],
+              method: "revokeAccessFromDoctor",
+              params: [selectedAddress as `0x${string}`],
             });
           } else {
             console.log("Revoke Cancelled");

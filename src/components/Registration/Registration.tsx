@@ -9,14 +9,15 @@ export const Register = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
   const [mobno, setMobno] = useState("");
-  const [registerAs, setRegisterAs] = useState("doctor");
+  const [registerAs, setRegisterAs] = useState("patient");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   console.log("Inside Registration");
 
   const account = useActiveAccount();
 
-  console.log("The account is: " + account);
+  console.log("The account is: ", account);
 
   const wallets = [
     inAppWallet(),
@@ -31,6 +32,7 @@ export const Register = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
     console.log(registerAs);
     try {
@@ -50,24 +52,27 @@ export const Register = () => {
     } catch (err) {
       console.log("The Error is", err);
     }
+    setLoading(false);
   };
 
   const callContractFunction = async (as: string) => {
     try {
       let transaction;
 
+      console.log("The details are: ", name, age, mobno);
+
       if (as === "doctor") {
         console.log("Creating Doc");
         transaction = prepareContractCall({
           contract: Contract,
-          method: "addDoc",
+          method: "registerDoctor",
           params: [name, age, mobno],
         });
       } else {
         console.log("Creating Patient");
         transaction = prepareContractCall({
           contract: Contract,
-          method: "addPatient",
+          method: "registerPatient",
           params: [name, age, mobno],
         });
       }
@@ -92,7 +97,9 @@ export const Register = () => {
     <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-[#c9def4] to-[#b8a4c9]">
       <ConnectButton client={client} wallets={wallets} />
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
-        <h2 className="text-center mb-4 text-5xl">Register</h2>
+        <h2 className="text-center mb-4 text-5xl">
+          {loading ? " Registering..." : "Register"}
+        </h2>
         <form className="register-form" onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="name" className="block mb-1">
@@ -150,8 +157,9 @@ export const Register = () => {
           <button
             type="submit"
             className="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            disabled={loading}
           >
-            Submit Details
+            {loading ? "Loading" : "Submit Details"}
           </button>
         </form>
         <button

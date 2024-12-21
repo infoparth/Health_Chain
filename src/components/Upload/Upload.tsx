@@ -1,7 +1,11 @@
 import { upload } from "thirdweb/storage";
 import { Contract, client } from "@/constants/Contract";
 import { MediaRenderer, useActiveAccount } from "thirdweb/react";
-import { prepareContractCall, sendAndConfirmTransaction } from "thirdweb";
+import {
+  prepareContractCall,
+  sendAndConfirmTransaction,
+  simulateTransaction,
+} from "thirdweb";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,16 +15,11 @@ import { Input } from "@/components/ui/input";
 const Upload: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [URI, setURI] = useState<string | null>(null);
-
-  const contract = Contract;
+  const [loading, setLoading] = useState(false);
 
   const Navigate = useNavigate();
 
   const account = useActiveAccount();
-
-  console.log("The account is: " + account);
-
-  console.log("contract: ", contract);
 
   const fileUpload = async (_uri: string) => {
     try {
@@ -30,7 +29,11 @@ const Upload: React.FC = () => {
         params: [_uri],
       });
 
-      console.log("The transaction is", transaction);
+      const result = await simulateTransaction({
+        transaction,
+        account: account,
+      });
+      console.log("simulation result", result);
 
       if (transaction && account) {
         const transactionReceipt = await sendAndConfirmTransaction({
@@ -48,20 +51,23 @@ const Upload: React.FC = () => {
   };
 
   const uploadToIPFS = async () => {
+    console.log("File Upload to IPFS start: ", Date.now());
     if (file !== null) {
+      setLoading(true);
       const uri = await upload({
         client,
         files: [file],
       });
-
       console.log("The URI is: " + uri);
+      console.log("File Upload to IPFS ends: ", Date.now());
 
       setURI(uri);
 
       try {
+        console.log("Smart Contract Initiaition start: ", Date.now());
         const isSuccess = await fileUpload(uri);
+        console.log("Smart Contract call done: ", Date.now());
 
-        console.log(isSuccess);
         if (isSuccess !== undefined) {
           Navigate("/patient");
         }
@@ -70,6 +76,7 @@ const Upload: React.FC = () => {
       }
 
       scrollToBottom();
+      setLoading(false);
     } else {
       alert("Please select a file to upload");
     }
@@ -121,8 +128,9 @@ const Upload: React.FC = () => {
           <Button
             onClick={uploadToIPFS}
             className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            disabled={loading}
           >
-            Upload
+            {loading ? "Loading..." : "Upload"}
           </Button>
         </div>
         {fileData()}

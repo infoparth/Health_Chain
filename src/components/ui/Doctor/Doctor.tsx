@@ -19,8 +19,8 @@ const ChildComponent: React.FC<ChildProps> = ({ input }) => {
 
   const { data: record_list } = useReadContract({
     contract: Contract,
-    method: "getDocuments",
-    params: [input],
+    method: "getDoctorAccessibleDocuments",
+    params: [walletAddress as `0x${string}`, input as `0x${string}`],
   });
 
   console.log("docs", record_list);
@@ -30,8 +30,12 @@ const ChildComponent: React.FC<ChildProps> = ({ input }) => {
       <div>
         Records List
         <ul>
-          {record_list.map((url, index) => (
-            <MediaRenderer key={index} client={client} src={url} />
+          {record_list.map((document, index) => (
+            <MediaRenderer
+              key={index}
+              client={client}
+              src={document?.documentURI}
+            />
           ))}
         </ul>
       </div>
@@ -56,8 +60,8 @@ const Doctor: React.FC = () => {
 
   const { data: patient_list } = useReadContract({
     contract: Contract,
-    method: "patientsUnderDoctor",
-    params: [walletAddress],
+    method: "getMyPatients",
+    params: [walletAddress as `0x${string}`],
   });
 
   console.log("the Patient", patient_list);

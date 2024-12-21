@@ -20,30 +20,34 @@ const Login: React.FC = () => {
   const [userAddress, setUserAddress] = useState<string | undefined>();
 
   console.log("called");
-  const { data: patientData, isLoading } = useReadContract({
+  const { data: userData, isLoading } = useReadContract({
     contract: Contract,
-    method: "checkPatient",
-    params: [walletAddress],
+    method: "getUserDetails",
+    params: [walletAddress as `0x${string}`],
   });
 
   console.log(isLoading);
-  const { data: doctorData } = useReadContract({
-    contract: Contract,
-    method: "checkDoc",
-    params: [walletAddress],
-  });
+  // const { data: doctorData } = useReadContract({
+  //   contract: Contract,
+  //   method: "checkDoc",
+  //   params: [walletAddress],
+  // });
 
-  console.log("The returned address is:", doctorData);
-  console.log("The returned address is:", patientData);
+  // console.log("The returned address is:", doctorData);
+  console.log("The returned address is:", userData);
 
   console.log("The user address is:", userAddress);
 
   useEffect(() => {
-    setIsPatient(patientData);
-    setIsDoctor(doctorData);
+    if (userData?.role === 1) {
+      setIsDoctor(true);
+    } else if (userData?.role === 2) {
+      setIsPatient(true);
+    }
+
     const userAdd = userWallet?.address;
     setUserAddress(userAdd);
-  }, [patientData, doctorData, userWallet]);
+  }, [userData, userWallet]);
 
   const clickedButton = async () => {
     console.log("inside clicked");
