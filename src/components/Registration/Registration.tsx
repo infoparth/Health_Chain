@@ -9,7 +9,7 @@ export const Register = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
   const [mobno, setMobno] = useState("");
-  const [registerAs, setRegisterAs] = useState("patient");
+  const [registerAs, setRegisterAs] = useState("doctor");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
