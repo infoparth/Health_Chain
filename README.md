@@ -2,11 +2,6 @@
 
 This project leverages blockchain technology to securely store and manage medical records, transforming them into NFTs. It provides role-based access to medical documents, ensuring that only authorized doctors can view and manage patient information. This approach enhances the security, privacy, and accessibility of medical records, offering a modern solution for healthcare data management.
 
-### Getting Started
-
-To start the project, run the following commands
-
-````
 # Health Chain (SecureMed)
 
 Health Chain (SecureMed) is a blockchain-enabled web application for secure medical record storage, access management, and optional NFT monetization. Patients can upload medical documents, control which doctors can view them, and mint selected documents as NFTs for provenance or monetization. Doctors can access only the patients who have explicitly granted access.
@@ -43,23 +38,26 @@ This README documents the project's purpose, architecture, features, impact metr
 ## What We Implemented & Why It Matters
 
 1. **Centralized Patient Data (`usePatientData`)**
-	- Calls contract reads once (documents + doctors) and computes `stats`.
-	- Shared with all patient child routes via `PatientLayout`'s `<Outlet context={...} />`.
-	- Impact: eliminates redundant RPC calls, reduces latency, lowers provider costs, and improves UX.
+
+   - Calls contract reads once (documents + doctors) and computes `stats`.
+   - Shared with all patient child routes via `PatientLayout`'s `<Outlet context={...} />`.
+   - Impact: eliminates redundant RPC calls, reduces latency, lowers provider costs, and improves UX.
 
 2. **Role Enforcement (`useAuthRedirect` + Layouts)**
-	- `useAuthRedirect` ensures the wallet and role are authoritative.
-	- Applied in `PatientLayout` and `DoctorLayout` so protected routes are enforced at layout level.
-	- Disconnecting a wallet or switching wallets triggers immediate redirect to the correct entry point.
+
+   - `useAuthRedirect` ensures the wallet and role are authoritative.
+   - Applied in `PatientLayout` and `DoctorLayout` so protected routes are enforced at layout level.
+   - Disconnecting a wallet or switching wallets triggers immediate redirect to the correct entry point.
 
 3. **Routing Refactor**
-	- Patient routes (dashboard, view, upload, access, nft) are nested under `PatientLayout`.
-	- Doctor routes are nested under `DoctorLayout`.
-	- Keeps root layout generic and enforces role-specific checks in dedicated layouts.
+
+   - Patient routes (dashboard, view, upload, access, nft) are nested under `PatientLayout`.
+   - Doctor routes are nested under `DoctorLayout`.
+   - Keeps root layout generic and enforces role-specific checks in dedicated layouts.
 
 4. **Error Handling & Loading**
-	- Contract calls use `queryOptions: { enabled: !!walletAddress }` to avoid premature queries.
-	- Components have defensive try/catch and user-friendly error UI components.
+   - Contract calls use `queryOptions: { enabled: !!walletAddress }` to avoid premature queries.
+   - Components have defensive try/catch and user-friendly error UI components.
 
 ---
 
@@ -93,6 +91,7 @@ This README documents the project's purpose, architecture, features, impact metr
 ## Getting Started (local development)
 
 Pre-requisites:
+
 - Node.js (>=16 recommended)
 - npm
 
@@ -101,7 +100,7 @@ Install dependencies and run the development server:
 ```bash
 npm install
 npm run dev
-````
+```
 
 Open the app in your browser. Use the header Connect button to connect a wallet and test patient/doctor flows.
 
