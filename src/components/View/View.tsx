@@ -1,5 +1,5 @@
-import { Contract, client } from "@/constants/Contract";
-import { useActiveAccount, MediaRenderer } from "thirdweb/react";
+import { client } from "@/constants/Contract";
+import { MediaRenderer } from "thirdweb/react";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,12 +11,14 @@ import { UsePatientDataReturn } from "@/hooks/usePatientData";
 
 export default function View() {
   const [selectedDocument, setSelectedDocument] = useState<string | null>(null);
-  const wallet = useActiveAccount();
   const navigate = useNavigate();
   const patientData = useOutletContext<UsePatientDataReturn>();
-  
+
   // Safely destructure with error handling
-  const { documents, isLoading } = patientData || { documents: undefined, isLoading: false };
+  const { documents, isLoading } = patientData || {
+    documents: undefined,
+    isLoading: false,
+  };
 
   if (isLoading) {
     return (
@@ -31,7 +33,9 @@ export default function View() {
       <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
         <div className="relative max-w-6xl w-full">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-white text-xl font-semibold">Document Preview</h2>
+            <h2 className="text-white text-xl font-semibold">
+              Document Preview
+            </h2>
             <Button
               onClick={() => setSelectedDocument(null)}
               variant="secondary"
@@ -103,7 +107,9 @@ export default function View() {
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
                               <Eye className="h-4 w-4" />
-                              <span className="text-sm font-medium">View Document</span>
+                              <span className="text-sm font-medium">
+                                View Document
+                              </span>
                             </div>
                             <Button
                               variant="secondary"
@@ -111,7 +117,7 @@ export default function View() {
                               className="h-8 w-8"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                window.open(document?.documentURI, '_blank');
+                                window.open(document?.documentURI, "_blank");
                               }}
                             >
                               <Download className="h-4 w-4" />
@@ -145,7 +151,7 @@ export default function View() {
                   icon={<FileText className="h-16 w-16 text-gray-400" />}
                   action={{
                     label: "Upload Document",
-                    onClick: () => navigate("/patient/upload")
+                    onClick: () => navigate("/patient/upload"),
                   }}
                 />
               </CardContent>

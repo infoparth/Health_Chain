@@ -2,13 +2,26 @@ import { useState } from "react";
 import { useActiveAccount } from "thirdweb/react";
 import { Contract } from "@/constants/Contract";
 import { prepareContractCall, sendAndConfirmTransaction } from "thirdweb";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loading } from "@/components/ui/loading";
 import { EmptyState } from "@/components/ui/error";
-import { Shield, UserPlus, UserMinus, AlertCircle, Stethoscope, CheckCircle } from "lucide-react";
+import {
+  Shield,
+  UserPlus,
+  UserMinus,
+  AlertCircle,
+  Stethoscope,
+  CheckCircle,
+} from "lucide-react";
 import { useOutletContext } from "react-router-dom";
 import { UsePatientDataReturn } from "@/hooks/usePatientData";
 
@@ -20,14 +33,13 @@ export default function Access() {
   const [success, setSuccess] = useState("");
 
   const wallet = useActiveAccount();
-  const walletAddress = wallet?.address || "";
   const patientData = useOutletContext<UsePatientDataReturn>();
-  
+
   // Safely destructure with error handling
-  const { doctors, isLoading, refetchDoctors } = patientData || { 
-    doctors: undefined, 
+  const { doctors, isLoading, refetchDoctors } = patientData || {
+    doctors: undefined,
     isLoading: false,
-    refetchDoctors: () => {}
+    refetchDoctors: () => {},
   };
 
   const callContractFunction = async (task: string) => {
@@ -47,7 +59,7 @@ export default function Access() {
 
     try {
       let transaction;
-      
+
       if (task === "grantAccess") {
         transaction = prepareContractCall({
           contract: Contract,
@@ -78,14 +90,14 @@ export default function Access() {
         });
 
         setSuccess(
-          task === "grantAccess" 
-            ? "Access granted successfully!" 
+          task === "grantAccess"
+            ? "Access granted successfully!"
             : "Access revoked successfully!"
         );
-        
+
         setNewDoctorAddress("");
         setSelectedAddress("");
-        
+
         // Refetch doctor list
         if (refetchDoctors) {
           refetchDoctors();
@@ -172,7 +184,8 @@ export default function Access() {
                   className="font-mono"
                 />
                 <p className="text-xs text-gray-500">
-                  Enter the blockchain wallet address of the doctor you want to grant access to
+                  Enter the blockchain wallet address of the doctor you want to
+                  grant access to
                 </p>
               </div>
 
@@ -227,7 +240,9 @@ export default function Access() {
                             <Stethoscope className="h-6 w-6 text-white" />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <p className="font-medium text-gray-900">Doctor #{index + 1}</p>
+                            <p className="font-medium text-gray-900">
+                              Doctor #{index + 1}
+                            </p>
                             <p className="text-sm text-gray-500 font-mono truncate">
                               {doctorAddress}
                             </p>
@@ -246,7 +261,9 @@ export default function Access() {
                               <Button
                                 variant="destructive"
                                 size="sm"
-                                onClick={() => callContractFunction("revokeAccess")}
+                                onClick={() =>
+                                  callContractFunction("revokeAccess")
+                                }
                                 disabled={loading}
                               >
                                 {loading ? (
@@ -292,19 +309,30 @@ export default function Access() {
             <ul className="space-y-2 text-sm text-blue-800">
               <li className="flex items-start">
                 <span className="mr-2">•</span>
-                <span>Only doctors you explicitly grant access to can view your medical records</span>
+                <span>
+                  Only doctors you explicitly grant access to can view your
+                  medical records
+                </span>
               </li>
               <li className="flex items-start">
                 <span className="mr-2">•</span>
-                <span>You can revoke access at any time with immediate effect</span>
+                <span>
+                  You can revoke access at any time with immediate effect
+                </span>
               </li>
               <li className="flex items-start">
                 <span className="mr-2">•</span>
-                <span>All access changes are recorded on the blockchain for transparency</span>
+                <span>
+                  All access changes are recorded on the blockchain for
+                  transparency
+                </span>
               </li>
               <li className="flex items-start">
                 <span className="mr-2">•</span>
-                <span>Make sure to verify the doctor's wallet address before granting access</span>
+                <span>
+                  Make sure to verify the doctor's wallet address before
+                  granting access
+                </span>
               </li>
             </ul>
           </div>

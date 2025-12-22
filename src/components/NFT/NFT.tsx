@@ -3,7 +3,13 @@ import { Contract, client } from "@/constants/Contract";
 import { useActiveAccount, MediaRenderer } from "thirdweb/react";
 import { prepareContractCall, sendAndConfirmTransaction } from "thirdweb";
 import { upload } from "thirdweb/storage";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,12 +33,12 @@ export default function NFT() {
   const walletAddress = wallet?.address || "";
   const navigate = useNavigate();
   const patientData = useOutletContext<UsePatientDataReturn>();
-  
+
   // Safely destructure with error handling
-  const { documents, isLoading, stats } = patientData || { 
-    documents: undefined, 
+  const { documents, isLoading } = patientData || {
+    documents: undefined,
     isLoading: false,
-    stats: { totalDocuments: 0, authorizedDoctors: 0, nftsMinted: 0 }
+    stats: { totalDocuments: 0, authorizedDoctors: 0, nftsMinted: 0 },
   };
 
   const callContractFunction = async () => {
@@ -63,7 +69,9 @@ export default function NFT() {
       }
     } catch (err) {
       console.error("Contract call error:", err);
-      throw new Error(err instanceof Error ? err.message : "Failed to mint NFT");
+      throw new Error(
+        err instanceof Error ? err.message : "Failed to mint NFT"
+      );
     }
   };
 
@@ -85,7 +93,8 @@ export default function NFT() {
     try {
       const nftMetadata = {
         name: "Medical Records NFT",
-        description: "This NFT represents ownership of medical records on the blockchain",
+        description:
+          "This NFT represents ownership of medical records on the blockchain",
         image: selectedURI,
       };
 
@@ -195,7 +204,9 @@ export default function NFT() {
                             <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                               <div className="text-white text-center">
                                 <Sparkles className="h-8 w-8 mx-auto mb-2" />
-                                <p className="text-sm font-medium">Already Minted</p>
+                                <p className="text-sm font-medium">
+                                  Already Minted
+                                </p>
                               </div>
                             </div>
                           )}
@@ -215,7 +226,9 @@ export default function NFT() {
               <div className="lg:col-span-1">
                 <Card className="border-none shadow-xl sticky top-4">
                   <CardHeader>
-                    <CardTitle className="text-xl">Mint Configuration</CardTitle>
+                    <CardTitle className="text-xl">
+                      Mint Configuration
+                    </CardTitle>
                     <CardDescription>
                       Configure NFT minting settings
                     </CardDescription>
@@ -224,14 +237,18 @@ export default function NFT() {
                     {selectedRecord ? (
                       <>
                         <div className="p-4 bg-primary/5 rounded-lg">
-                          <p className="text-sm text-gray-600 mb-1">Selected Document</p>
+                          <p className="text-sm text-gray-600 mb-1">
+                            Selected Document
+                          </p>
                           <p className="font-semibold text-gray-900">
                             Document #{selectedRecord.toString()}
                           </p>
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="mintAddress">Recipient Wallet Address</Label>
+                          <Label htmlFor="mintAddress">
+                            Recipient Wallet Address
+                          </Label>
                           <Input
                             id="mintAddress"
                             type="text"
@@ -256,7 +273,10 @@ export default function NFT() {
                               }
                             }}
                           />
-                          <Label htmlFor="useMyAddress" className="text-sm cursor-pointer">
+                          <Label
+                            htmlFor="useMyAddress"
+                            className="text-sm cursor-pointer"
+                          >
                             Use my wallet address
                           </Label>
                         </div>
@@ -280,12 +300,16 @@ export default function NFT() {
                         </Button>
 
                         <div className="pt-4 border-t">
-                          <h4 className="font-semibold text-sm mb-2">What happens next?</h4>
+                          <h4 className="font-semibold text-sm mb-2">
+                            What happens next?
+                          </h4>
                           <ul className="space-y-2 text-xs text-gray-600">
                             <li>• NFT metadata will be uploaded to IPFS</li>
                             <li>• Smart contract will mint the NFT</li>
                             <li>• NFT will be sent to specified address</li>
-                            <li>• Transaction will be recorded on blockchain</li>
+                            <li>
+                              • Transaction will be recorded on blockchain
+                            </li>
                           </ul>
                         </div>
                       </>
@@ -310,7 +334,7 @@ export default function NFT() {
                   icon={<Coins className="h-16 w-16 text-gray-400" />}
                   action={{
                     label: "Upload Document",
-                    onClick: () => navigate("/patient/upload")
+                    onClick: () => navigate("/patient/upload"),
                   }}
                 />
               </CardContent>
@@ -324,7 +348,8 @@ export default function NFT() {
               About NFT Monetization
             </h4>
             <p className="text-sm text-orange-800 mb-4">
-              Minting your medical records as NFTs opens up new possibilities for data ownership and monetization.
+              Minting your medical records as NFTs opens up new possibilities
+              for data ownership and monetization.
             </p>
             <ul className="space-y-2 text-sm text-orange-800">
               <li className="flex items-start">
@@ -333,7 +358,9 @@ export default function NFT() {
               </li>
               <li className="flex items-start">
                 <span className="mr-2">•</span>
-                <span>Enable potential research participation opportunities</span>
+                <span>
+                  Enable potential research participation opportunities
+                </span>
               </li>
               <li className="flex items-start">
                 <span className="mr-2">•</span>
