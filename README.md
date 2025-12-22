@@ -1,7 +1,3 @@
-# Health Chain
-
-This project leverages blockchain technology to securely store and manage medical records, transforming them into NFTs. It provides role-based access to medical documents, ensuring that only authorized doctors can view and manage patient information. This approach enhances the security, privacy, and accessibility of medical records, offering a modern solution for healthcare data management.
-
 # Health Chain (SecureMed)
 
 Health Chain (SecureMed) is a blockchain-enabled web application for secure medical record storage, access management, and optional NFT monetization. Patients can upload medical documents, control which doctors can view them, and mint selected documents as NFTs for provenance or monetization. Doctors can access only the patients who have explicitly granted access.
